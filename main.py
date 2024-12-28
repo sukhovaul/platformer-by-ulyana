@@ -11,7 +11,7 @@ class Game():
         self.screen = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         pg.display.set_caption('платформер')
 
-        self.tmx_map = pytmx.load_pygame('levels/level1.tmx')
+        self.tmx_map = pytmx.load_pygame('levels/map1.tmx')
 
         self.run()
     def run(self):
