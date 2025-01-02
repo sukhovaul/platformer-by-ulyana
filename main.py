@@ -1,5 +1,6 @@
 import pygame as pg
 import pytmx
+from character import Player
 
 pg.init()
 
@@ -12,6 +13,7 @@ class Game():
         pg.display.set_caption('платформер')
 
         self.tmx_map = pytmx.load_pygame('levels/map1.tmx')
+        self.player = Player(SCREEN_WIDTH,SCREEN_HEIGHT)
 
         self.run()
     def run(self):
@@ -35,6 +37,8 @@ class Game():
 
                 if tile:
                     self.screen.blit(tile, (x*self.tmx_map.tilewidth, y*self.tmx_map.tileheight))
+
+        self.screen.blit(self.player.image, self.player.rect)
 
         pg.display.flip()
 
