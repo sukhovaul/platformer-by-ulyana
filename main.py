@@ -27,7 +27,7 @@ class Game():
                 pg.quit()
                 exit()
     def update(self):
-        ...
+        self.player.move()
     def draw(self):
         self.screen.fill('light blue')
 
