@@ -28,6 +28,7 @@ class Game():
                 exit()
     def update(self):
         self.player.move()
+        self.player.jump()
     def draw(self):
         self.screen.fill('light blue')
 
