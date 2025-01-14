@@ -1,16 +1,21 @@
 import pygame as pg
 import pytmx
 from character import Player
+from buttons import draw_button
 
 pg.init()
 
 SCREEN_WIDTH=800
 SCREEN_HEIGHT=600
 
+main_rect = pg.Rect(100, 100, 100, 50)
+
 class Game():
     def __init__(self):
         self.screen = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         pg.display.set_caption('платформер')
+
+        self.current_menu = 'main_menu'
 
         self.tmx_map = pytmx.load_pygame('levels/map1.tmx')
         self.player = Player(SCREEN_WIDTH,SCREEN_HEIGHT)
@@ -43,6 +48,10 @@ class Game():
             if event.type==pg.QUIT:
                 pg.quit()
                 exit()
+            elif event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
+                if self.current_menu == 'main_menu':
+                    if main_rect.collidepoint(event.pos):
+                        self.current_menu = 'game_menu'
 
         keys = pg.key.get_pressed()
         self.player.move(keys)
@@ -60,14 +69,20 @@ class Game():
     def draw(self):
         self.screen.fill('light blue')
 
-        for layer in self.tmx_map:
-            for x,y,gid in layer:
-                tile = self.tmx_map.get_tile_image_by_gid(gid)
+        if self.current_menu == 'main_menu':
+            self.screen.fill('black')
 
-                if tile:
-                    self.screen.blit(tile, (x*self.tmx_map.tilewidth, y*self.tmx_map.tileheight))
+            draw_button(self.screen, main_rect, 'начать игру', 'blue', 5)
 
-        self.screen.blit(self.player.image, self.player.rect)
+        elif self.current_menu == 'game_menu':
+            for layer in self.tmx_map:
+                for x,y,gid in layer:
+                    tile = self.tmx_map.get_tile_image_by_gid(gid)
+
+                    if tile:
+                        self.screen.blit(tile, (x*self.tmx_map.tilewidth, y*self.tmx_map.tileheight))
+
+            self.screen.blit(self.player.image, self.player.rect)
 
         pg.display.flip()
 
