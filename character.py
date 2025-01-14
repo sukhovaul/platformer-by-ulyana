@@ -21,8 +21,7 @@ class Player(pg.sprite.Sprite): #класс player наследует класс
         self.map_width = map_width
         self.map_height = map_height
 
-    def move(self):
-        keys=pg.key.get_pressed()
+    def move(self, keys):
 
         if keys[pg.K_LEFT]:
             self.velocity_x=-1
@@ -55,7 +54,7 @@ class Player(pg.sprite.Sprite): #класс player наследует класс
             if 0 <= new_y <= self.map_height - self.rect.height:
                 self.rect.y = new_y
         if self.is_jumping:
-            new_y = self.rect.y - 3
+            new_y = self.rect.y - 2
             if 0 <= new_y <= self.map_height - self.rect.height:
                 self.rect.y = new_y
             self.is_jumping=False
