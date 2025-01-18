@@ -8,7 +8,7 @@ class Player(pg.sprite.Sprite): #класс player наследует класс
             self.image = pg.image.load(image_path).convert_alpha()
             self.image = pg.transform.scale(self.image, (50,50))
         else:
-            self.image = pg.Surface((50,50)) #создаем прямоугольник размерами 50 на 50
+            self.image = pg.Surface((16,16)) #создаем прямоугольник размерами 50 на 50
             self.image.fill("red")
 
         self.rect = self.image.get_rect() #получаем рпрямоугольник из изображения

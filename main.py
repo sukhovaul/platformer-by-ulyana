@@ -8,7 +8,12 @@ pg.init()
 SCREEN_WIDTH=800
 SCREEN_HEIGHT=600
 
-main_rect = pg.Rect(100, 100, 100, 50)
+font_path = 'fonts/Dudka Bold.ttf'
+font_main = pg.font.Font(font_path, 30)
+
+new_game_rect = pg.Rect(250, 200, 300, 100)
+continue_game_rect = pg.Rect(250, 350, 300, 100)
+light_brown = (191,157,123)
 
 class Game():
     def __init__(self):
@@ -50,7 +55,7 @@ class Game():
                 exit()
             elif event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
                 if self.current_menu == 'main_menu':
-                    if main_rect.collidepoint(event.pos):
+                    if new_game_rect.collidepoint(event.pos):
                         self.current_menu = 'game_menu'
 
         keys = pg.key.get_pressed()
@@ -62,6 +67,10 @@ class Game():
             print("Игрок на воде!")
         elif tile_gid in [1, 2, 3]:
             print("Игрок на платформе!")
+        elif tile_gid == 74:
+            self.player.is_jumping = False
+            self.player.x = 0
+            self.player.y = 0
         else:
             print("Игрок в воздухе или на неизвестном тайле!", tile_gid)
     def update(self):
@@ -72,7 +81,8 @@ class Game():
         if self.current_menu == 'main_menu':
             self.screen.fill('black')
 
-            draw_button(self.screen, main_rect, 'начать игру', 'blue', 5)
+            draw_button(self.screen, new_game_rect, 'начать новую игру', light_brown, 'brown', 0, font_main)
+            draw_button(self.screen, continue_game_rect, 'продолжить игру', light_brown, 'brown', 0, font_main)
 
         elif self.current_menu == 'game_menu':
             for layer in self.tmx_map:
