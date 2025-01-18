@@ -50,9 +50,10 @@ class Player(pg.sprite.Sprite): #класс player наследует класс
             self.is_jumping=True
 
         if not self.is_jumping:
-            new_y = self.rect.y+self.gravity
-            if 0 <= new_y <= self.map_height - self.rect.height:
-                self.rect.y = new_y
+            pass
+            #new_y = self.rect.y+self.gravity
+            #if 0 <= new_y <= self.map_height - self.rect.height:
+                #self.rect.y = new_y
         if self.is_jumping:
             new_y = self.rect.y - 2
             if 0 <= new_y <= self.map_height - self.rect.height:
