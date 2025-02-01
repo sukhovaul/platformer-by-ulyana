@@ -66,7 +66,7 @@ class Game():
         if tile_gid == 75:
             print("Игрок на воде!")
         elif tile_gid in [1, 2, 3]:
-            print("Игрок на платформе!")
+            print("Игрок на платформе!", tile_gid)
         elif tile_gid == 74:
             self.player.is_jumping = False
             self.player.x = 0
@@ -86,11 +86,20 @@ class Game():
 
         elif self.current_menu == 'game_menu':
             for layer in self.tmx_map:
-                for x,y,gid in layer:
-                    tile = self.tmx_map.get_tile_image_by_gid(gid)
+                if isinstance(layer, pytmx.TiledTileLayer):
+                    for x,y,gid in layer:
+                        tile = self.tmx_map.get_tile_image_by_gid(gid)
 
-                    if tile:
-                        self.screen.blit(tile, (x*self.tmx_map.tilewidth, y*self.tmx_map.tileheight))
+                        if tile:
+                            self.screen.blit(tile, (x*self.tmx_map.tilewidth, y*self.tmx_map.tileheight))
+                if isinstance(layer, pytmx.TiledObjectGroup):
+                    if layer.name == "hit block":
+                        for obj in layer:
+                            if pg.Rect(obj.x, obj.y, obj.width, obj.height).colliderect(self.player.rect) == True:
+                                print("YOU HIT THE RED BLOCK!!")
+                                self.player.is_jumping = False
+                                self.player.gravity = 0
+                                break
 
             self.screen.blit(self.player.image, self.player.rect)
 

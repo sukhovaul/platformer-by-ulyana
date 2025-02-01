@@ -12,7 +12,7 @@ class Player(pg.sprite.Sprite): #класс player наследует класс
             self.image.fill("red")
 
         self.rect = self.image.get_rect() #получаем рпрямоугольник из изображения
-        self.rect.center = (200,100) #устанавливаем начальное положение игрока
+        self.rect.center = (70,300) #устанавливаем начальное положение игрока
 
         self.velocity_x=0
         self.velocity_y=0
@@ -50,12 +50,12 @@ class Player(pg.sprite.Sprite): #класс player наследует класс
             self.is_jumping=True
 
         if not self.is_jumping:
-            pass
-            #new_y = self.rect.y+self.gravity
-            #if 0 <= new_y <= self.map_height - self.rect.height:
-                #self.rect.y = new_y
+            self.gravity = 0.5
+            new_y = self.rect.y+self.gravity
+            if 0 <= new_y <= self.map_height - self.rect.height:
+                self.rect.y = new_y
         if self.is_jumping:
+            self.gravity = 0.5
             new_y = self.rect.y - 2
             if 0 <= new_y <= self.map_height - self.rect.height:
                 self.rect.y = new_y
-            self.is_jumping=False
