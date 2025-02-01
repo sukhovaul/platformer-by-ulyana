@@ -32,22 +32,6 @@ class Game():
             self.update()
             self.draw()
 
-    def get_current_tile_gid(self, tmx_map):
-        # Получаем координаты игрока
-        player_x = self.player.rect.centerx  # Центр игрока по X
-        player_y = self.player.rect.bottom  # Нижняя часть игрока по Y (стоит на тайле)
-
-        # Вычисляем номер тайла (в строках и столбцах)
-        tile_x = player_x // tmx_map.tilewidth
-        tile_y = player_y // tmx_map.tileheight
-
-        # Проверяем каждый слой карты, чтобы найти gid
-        for layer in tmx_map.visible_layers:
-            if isinstance(layer, pytmx.TiledTileLayer):  # Только тайловые слои
-                gid = layer.data[tile_x][tile_y]
-                return gid  # Возвращаем номер тайла
-
-        return None  # Если тайл не найден
     def event(self):
         for event in pg.event.get():
             if event.type==pg.QUIT:
@@ -61,18 +45,6 @@ class Game():
         keys = pg.key.get_pressed()
         self.player.move(keys)
 
-        # Определяем номер тайла, на котором находится игрок
-        tile_gid = self.get_current_tile_gid(self.tmx_map)
-        if tile_gid == 75:
-            print("Игрок на воде!")
-        elif tile_gid in [1, 2, 3]:
-            print("Игрок на платформе!", tile_gid)
-        elif tile_gid == 74:
-            self.player.is_jumping = False
-            self.player.x = 0
-            self.player.y = 0
-        else:
-            print("Игрок в воздухе или на неизвестном тайле!", tile_gid)
     def update(self):
         self.player.jump()
     def draw(self):
@@ -99,7 +71,8 @@ class Game():
                                 print("YOU HIT THE RED BLOCK!!")
                                 self.player.is_jumping = False
                                 self.player.gravity = 0
-                                break
+                            else:
+                                self.player.gravity = 0.5
 
             self.screen.blit(self.player.image, self.player.rect)
 
