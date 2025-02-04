@@ -58,13 +58,15 @@ class Game():
 
         elif self.current_menu == 'game_menu':
             for layer in self.tmx_map:
-                if isinstance(layer, pytmx.TiledTileLayer):
+                if isinstance(layer, pytmx.TiledTileLayer): #проверка является ли слой слоем тайлов
                     for x,y,gid in layer:
                         tile = self.tmx_map.get_tile_image_by_gid(gid)
 
                         if tile:
                             self.screen.blit(tile, (x*self.tmx_map.tilewidth, y*self.tmx_map.tileheight))
-                if isinstance(layer, pytmx.TiledObjectGroup):
+
+
+                if isinstance(layer, pytmx.TiledObjectGroup): #проверка является ли слой слоем объектов
                     if layer.name == "hit block":
                         for obj in layer:
                             if pg.Rect(obj.x, obj.y, obj.width, obj.height).colliderect(self.player.rect) == True:
@@ -73,6 +75,12 @@ class Game():
                                 self.player.gravity = 0
                             else:
                                 self.player.gravity = 0.5
+                    if layer.name == 'dead block':
+                        for obj in layer:
+                            if pg.Rect(obj.x, obj.y, obj.width, obj.height).colliderect(self.player.rect) == True:
+                                print('dead block')
+                                self.player.rect.x = 70
+                                self.player.rect.y = 300
 
             self.screen.blit(self.player.image, self.player.rect)
 
