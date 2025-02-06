@@ -90,8 +90,6 @@ class Game():
                                 print("YOU HIT THE RED BLOCK!!")
                                 self.player.is_jumping = False
                                 self.player.gravity = 0
-                            else:
-                                self.player.gravity = 0.5
                     if layer.name == 'dead block':
                         for obj in layer:
                             if pg.Rect(obj.x, obj.y, obj.width, obj.height).colliderect(self.player.rect) == True:
