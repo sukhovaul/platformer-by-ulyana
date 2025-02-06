@@ -43,7 +43,7 @@
 15,16,16,16,16,16,16,17,75,75,75,75,75,75,75,75,75,75,15,16,16,16,16,16,16,16,16,16,16,16,16,17,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75,75
 </data>
  </layer>
- <objectgroup id="3" name="hit block">
+ <objectgroup id="3" name="hit block" visible="0">
   <object id="8" name="platform1" x="0.743163" y="434.007" width="125.595" height="173.9"/>
   <object id="9" name="platform2" x="160.523" y="480.083" width="94.3817" height="14.8633"/>
   <object id="10" name="platform3" x="113.886" y="289.596" width="109.005" height="14.6425"/>

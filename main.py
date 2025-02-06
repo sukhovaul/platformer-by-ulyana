@@ -21,9 +21,18 @@ class Game():
         pg.display.set_caption('платформер')
 
         self.current_menu = 'main_menu'
+        self.objects = []
 
         self.tmx_map = pytmx.load_pygame('levels/map1.tmx')
         self.player = Player(SCREEN_WIDTH,SCREEN_HEIGHT)
+
+        for layer in self.tmx_map:
+            if isinstance(layer, pytmx.TiledObjectGroup):  # проверка является ли слой слоем объектов
+                if layer.name == "hit block":
+                    for obj in layer:
+                        new_object = pg.Rect(obj.x, obj.y, obj.width, obj.height)
+                        self.objects.append(new_object)
+        print(self.objects)
 
         self.run()
     def run(self):
@@ -47,6 +56,14 @@ class Game():
 
     def update(self):
         self.player.jump()
+
+        for obj in self.objects:
+            if pg.Rect(obj.x, obj.y, obj.width, obj.height).colliderect(self.player.rect) == True:
+                print("YOU HIT THE RED BLOCK!!")
+                self.player.is_jumping = False
+                self.player.gravity = 0
+            else:
+                self.player.gravity = 0.5
     def draw(self):
         self.screen.fill('light blue')
 
@@ -68,7 +85,7 @@ class Game():
 
                 if isinstance(layer, pytmx.TiledObjectGroup): #проверка является ли слой слоем объектов
                     if layer.name == "hit block":
-                        for obj in layer:
+                        for obj in self.objects:
                             if pg.Rect(obj.x, obj.y, obj.width, obj.height).colliderect(self.player.rect) == True:
                                 print("YOU HIT THE RED BLOCK!!")
                                 self.player.is_jumping = False
