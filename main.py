@@ -1,5 +1,5 @@
 import pygame as pg
-import pytmx
+import pytmx #импортируем библиотеку для работы с картами tmx
 from character import Player
 from buttons import draw_button
 
@@ -11,34 +11,42 @@ SCREEN_HEIGHT=600
 font_path = 'fonts/Dudka Bold.ttf'
 font_main = pg.font.Font(font_path, 30)
 
+#прямоугольники кнопки
 new_game_rect = pg.Rect(250, 200, 300, 100)
 continue_game_rect = pg.Rect(250, 350, 300, 100)
-light_brown = (191,157,123)
+
+#rgb цвета
+light_brown = (191,157,123) #тип данных tuple - кортеж
 
 class Game():
-    def __init__(self):
+    def __init__(self): #конструктор класса
         self.screen = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         pg.display.set_caption('платформер')
 
         self.current_menu = 'main_menu'
         self.objects = []
 
-        self.tmx_map = pytmx.load_pygame('levels/map1.tmx')
-        self.player = Player(SCREEN_WIDTH,SCREEN_HEIGHT)
+        self.tmx_map = pytmx.load_pygame('levels/map1.tmx') #загружаем tmx карту
+        self.player = Player(SCREEN_WIDTH,SCREEN_HEIGHT) #создаем объект класса player
 
-        for layer in self.tmx_map:
+
+
+        for layer in self.tmx_map: #проходим по всем слоям карты
             if isinstance(layer, pytmx.TiledObjectGroup):  # проверка является ли слой слоем объектов
-                if layer.name == "hit block":
-                    for obj in layer:
-                        new_object = pg.Rect(obj.x, obj.y, obj.width, obj.height)
-                        self.objects.append(new_object)
-        print(self.objects)
 
-        self.run()
-    def run(self):
+                #проверяем условие для слоя с блоками коллизии - ПЕРЕДВИЖЕНИЯ
+                if layer.name == "hit block":
+
+                    #проверяем каждый объект слоя
+                    for obj in layer:
+                        new_object = pg.Rect(obj.x, obj.y, obj.width, obj.height) #создаем объект rect для каждого объекта
+                        self.objects.append(new_object) #добавляем объект в список с объектами
+
+        self.run() #запускаем основной цикл программы
+    def run(self): #метод для главных игровых процессов
         while True:
-            self.event()
-            self.update()
+            self.event() #обработка событий и нажатий кнопок
+            self.update() #
             self.draw()
 
     def event(self):
@@ -70,10 +78,12 @@ class Game():
         if self.current_menu == 'main_menu':
             self.screen.fill('black')
 
+            #создаем и отображаем кнопки на экране
             draw_button(self.screen, new_game_rect, 'начать новую игру', light_brown, 'brown', 0, font_main)
             draw_button(self.screen, continue_game_rect, 'продолжить игру', light_brown, 'brown', 0, font_main)
 
         elif self.current_menu == 'game_menu':
+            #
             for layer in self.tmx_map:
                 if isinstance(layer, pytmx.TiledTileLayer): #проверка является ли слой слоем тайлов
                     for x,y,gid in layer:
