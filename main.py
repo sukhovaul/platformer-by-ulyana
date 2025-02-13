@@ -29,14 +29,11 @@ class Game():
         self.tmx_map = pytmx.load_pygame('levels/map1.tmx') #загружаем tmx карту
         self.player = Player(SCREEN_WIDTH,SCREEN_HEIGHT) #создаем объект класса player
 
-
-
         for layer in self.tmx_map: #проходим по всем слоям карты
             if isinstance(layer, pytmx.TiledObjectGroup):  # проверка является ли слой слоем объектов
 
                 #проверяем условие для слоя с блоками коллизии - ПЕРЕДВИЖЕНИЯ
                 if layer.name == "hit block":
-
                     #проверяем каждый объект слоя
                     for obj in layer:
                         new_object = pg.Rect(obj.x, obj.y, obj.width, obj.height) #создаем объект rect для каждого объекта
@@ -46,7 +43,7 @@ class Game():
     def run(self): #метод для главных игровых процессов
         while True:
             self.event() #обработка событий и нажатий кнопок
-            self.update() #
+            self.update()
             self.draw()
 
     def event(self):
@@ -59,7 +56,7 @@ class Game():
                     if new_game_rect.collidepoint(event.pos):
                         self.current_menu = 'game_menu'
 
-        keys = pg.key.get_pressed()
+        keys = pg.key.get_pressed() #все клавиши, которые были нажаты
         self.player.move(keys)
 
     def update(self):
@@ -73,8 +70,6 @@ class Game():
             else:
                 self.player.gravity = 0.5
     def draw(self):
-        self.screen.fill('light blue')
-
         if self.current_menu == 'main_menu':
             self.screen.fill('black')
 
@@ -83,33 +78,32 @@ class Game():
             draw_button(self.screen, continue_game_rect, 'продолжить игру', light_brown, 'brown', 0, font_main)
 
         elif self.current_menu == 'game_menu':
-            #
+            self.screen.fill('light blue')
+            #проходим по всем слоям карты
             for layer in self.tmx_map:
                 if isinstance(layer, pytmx.TiledTileLayer): #проверка является ли слой слоем тайлов
-                    for x,y,gid in layer:
-                        tile = self.tmx_map.get_tile_image_by_gid(gid)
-
+                    for x,y,gid in layer: #в перменные сохраняем значения x, y и номера тайла
+                        tile = self.tmx_map.get_tile_image_by_gid(gid) #загружаем в переменную тайл по номеру
+                        #проверка существует ли тайл
                         if tile:
                             self.screen.blit(tile, (x*self.tmx_map.tilewidth, y*self.tmx_map.tileheight))
 
 
                 if isinstance(layer, pytmx.TiledObjectGroup): #проверка является ли слой слоем объектов
-                    if layer.name == "hit block":
+                    if layer.name == "hit block": #проверка ялвяется ли слой объектов группой hit_block
                         for obj in self.objects:
-                            if pg.Rect(obj.x, obj.y, obj.width, obj.height).colliderect(self.player.rect) == True:
-                                print("YOU HIT THE RED BLOCK!!")
+                            if pg.Rect(obj.x, obj.y, obj.width, obj.height).colliderect(self.player.rect) == True: #проверка коллизии персонажа и объекта
                                 self.player.is_jumping = False
                                 self.player.gravity = 0
                     if layer.name == 'dead block':
                         for obj in layer:
                             if pg.Rect(obj.x, obj.y, obj.width, obj.height).colliderect(self.player.rect) == True:
-                                print('dead block')
                                 self.player.rect.x = 70
                                 self.player.rect.y = 300
 
             self.screen.blit(self.player.image, self.player.rect)
 
-        pg.display.flip()
+        pg.display.flip() #обновление экрана
 
-if __name__=="__main__":
+if __name__=="__main__": #проверка текущего скрипта
     game1=Game() #создали объект класса Game()
