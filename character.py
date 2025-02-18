@@ -11,7 +11,7 @@ class Player(pg.sprite.Sprite): #класс player наследует класс
             self.image = pg.Surface((16,16)) #создаем прямоугольник размерами 50 на 50
             self.image.fill("red")
 
-        self.rect = self.image.get_rect() #получаем рпрямоугольник из изображения
+        self.rect = self.image.get_rect() #получаем прямоугольник из изображения
         self.rect.center = (70,300) #устанавливаем начальное положение игрока
 
         self.velocity_x=0
