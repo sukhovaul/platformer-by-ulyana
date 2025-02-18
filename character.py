@@ -60,3 +60,6 @@ class Player(pg.sprite.Sprite): #класс player наследует класс
             if 0 <= new_y <= self.map_height - self.rect.height:
                 self.rect.y = new_y
             self.is_jumping = False
+
+    def platform(self, tile):
+        self.rect.x = tile.x

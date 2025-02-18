@@ -51,7 +51,8 @@ class Game():
                         new_object = pg.Rect(obj.x, obj.y, obj.width, obj.height) #создаем объект rect для каждого объекта
                         self.objects.append(new_object) #добавляем объект в список с объектами
 
-        self.platform = Moving_platforms(self.moving_tiles, self.tile_images, move_range=40, speed = 0.1)
+        self.platform = Moving_platforms(self.moving_tiles, self.tile_images, move_range=40, speed = 70)
+        self.clock = pg.time.Clock()
 
         self.run() #запускаем основной цикл программы
     def run(self): #метод для главных игровых процессов
@@ -61,6 +62,7 @@ class Game():
             self.draw()
 
     def event(self):
+        self.dt = self.clock.tick(60)/ 1000.0
         for event in pg.event.get():
             if event.type==pg.QUIT:
                 pg.quit()
@@ -82,12 +84,13 @@ class Game():
                 self.player.gravity = 0
             else:
                 self.player.gravity = 0.5
-        self.platform.update()
+        self.platform.update(self.dt)
 
         for tile in self.platform.tiles:
             if self.player.rect.colliderect(tile):
                 self.player.is_jumping = False
                 self.player.gravity = 0
+                self.player.platform(tile)
     def draw(self):
         if self.current_menu == 'main_menu':
             self.screen.fill('black')

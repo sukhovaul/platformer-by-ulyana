@@ -10,14 +10,14 @@ class Moving_platforms():
         self.moved_distance = 0.0
         self.fractional_movement = 0.0
 
-    def update(self):
-        self.fractional_movement += self.speed * self.direction
+    def update(self, dt):
+        self.fractional_movement += self.speed * self.direction*dt
         move_step = int(self.fractional_movement)
 
         if move_step != 0:  # Двигаем только если накопился хотя бы 1 пиксель
             for tile in self.tiles:
                 tile.x += move_step
-            self.fractional_movement = 0
+            self.fractional_movement -= move_step
 
         self.moved_distance += abs(move_step)
 
